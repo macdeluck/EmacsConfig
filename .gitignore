@@ -3,3 +3,5 @@ auto-save-list/*
 .python-environments/*
 semanticdb/*
 ac-comphist.dat
+recentf
+ido.last

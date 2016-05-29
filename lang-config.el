@@ -1,5 +1,5 @@
 ;; use snippets
-(use-package YASnippet)
+(use-package yasnippet)
 (yas-global-mode 1)
 
 ;; load ansi term

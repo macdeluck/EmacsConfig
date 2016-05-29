@@ -1,18 +1,20 @@
 ;; append path
 (add-to-list 'load-path "~/.emacs.d/")
 
+;; use package
+(load "use-package.el")
+
 ;; load package archives
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
-(package-initialize)
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
+  (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (package-initialize))
 
 ;; set startup buffer as scratch
 (setq inhibit-splash-screen t)
 (switch-to-buffer "**")
-
-;; use package
-(load "use-package.el")
 
 ;; load editor config
 (load "editor-config")

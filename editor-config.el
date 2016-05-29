@@ -1,5 +1,8 @@
 (use-package cl-lib)
 
+;; no bell sound
+(setq visible-bell 1)
+
 ;; tab size
 (custom-set-variables '(tab-width 4))
 (defvaralias 'c-basic-offset 'tab-width)
@@ -57,3 +60,9 @@
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (flet ((process-list ())) ad-do-it))
+
+;; ALT-F4 to kill emacs (windows compatibility)
+(global-set-key [M-f4] 'save-buffers-kill-terminal)
+
+;; set default directory to home
+(setq default-directory (getenv "HOME"))
