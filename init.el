@@ -1,5 +1,5 @@
 ;; append path
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/elisp")
 
 ;; use package
 (load "use-package.el")
