@@ -16,6 +16,9 @@
 (setq inhibit-splash-screen t)
 (switch-to-buffer "**")
 
+;; load defs
+(load "xdefs-config")
+
 ;; load editor config
 (load "editor-config")
 
