@@ -1,3 +1,9 @@
+(if (eq system-type 'windows-nt)
+    (progn
+      (setq exec-path (append exec-path '("C:\\Python35")))
+      (setq exec-path (append exec-path '("C:\\Python35\\Scripts")))
+      ))      
+
 ;; python mode
 (use-package python-mode)
 
