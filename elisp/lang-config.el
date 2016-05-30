@@ -6,6 +6,6 @@
 (load "lang/ansi-term-config")
 
 ;; load python
-(defun lang-python-mode-setup ()
-    (load "lang/python-config"))
+(load "lang/python-config")
+(lang-python-init)
 (add-hook 'python-mode-hook 'lang-python-mode-setup)
