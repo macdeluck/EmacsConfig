@@ -13,7 +13,7 @@
       (apply orig-fun args))
 
 (defun lang-python-shell-send-buffer-no-prompt (&optional arg)
-  (python-shell-get-or-create-process "python -i" nil t))
+  (python-shell-get-or-create-process "ipython -i --no-banner" nil t))
 
 (defun lang-python-mode-setup ()
   (if (eq system-type 'windows-nt)
