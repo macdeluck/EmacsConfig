@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Constructor
+# key: ctor
+# --
+def __init__(self, ${1:args}):
+    super().__init__($1)
+    $0
