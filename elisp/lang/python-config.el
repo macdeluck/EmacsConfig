@@ -13,7 +13,7 @@
       (apply orig-fun args))
 
 (defun lang-python-shell-send-buffer-no-prompt (&optional arg)
-  (python-shell-get-or-create-process "ipython -i --no-banner" nil t))
+  (python-shell-get-or-create-process "python -i" nil t))
 
 (defun lang-python-mode-setup ()
   (if (eq system-type 'windows-nt)
@@ -23,6 +23,7 @@
   (jedi:setup)
   (advice-add 'python-shell-send-buffer :before #'lang-python-shell-send-buffer-no-prompt)
   (define-key python-mode-map (kbd "C-c C-c") (lambda () (interactive) (python-shell-send-buffer t)))
+  (define-key python-mode-map (kbd "C-c C-b") (lambda () (interactive) (python-shell-send-buffer nil)))
   (setq split-height-threshold 20)
   (setq split-width-threshold nil))
 
