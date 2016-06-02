@@ -12,8 +12,13 @@
       ;;(message "Python call replaced with args: %s" args)
       (apply orig-fun args))
 
+(if (eq system-type 'windows-nt)
+    (setq python-shell-interpreter "python")
+(setq python-shell-interpreter "/usr/bin/python3"))
+
 (defun lang-python-shell-send-buffer-no-prompt (&optional arg)
-  (python-shell-get-or-create-process "python -i" nil t))
+  (message "Starting python without prompt")
+  (python-shell-get-or-create-process (concat python-shell-interpreter " -i") nil t))
 
 (defun lang-python-mode-setup ()
   (if (eq system-type 'windows-nt)
