@@ -16,9 +16,14 @@
     (setq python-shell-interpreter "python")
 (setq python-shell-interpreter "/usr/bin/python3"))
 
-(defun lang-python-shell-send-buffer-no-prompt (&optional arg)
-  (message "Starting python without prompt")
+(defun lang-python-shell-no-prompt (&optional arg)
   (python-shell-get-or-create-process (concat python-shell-interpreter " -i") nil t))
+
+(defun lang-python-send-buffer-with-my-args (args)
+  (interactive "sPython arguments: ")
+  (lang-python-shell-no-prompt)
+  (python-shell-send-string (concat "import sys; sys.argv = '''" (buffer-name) " " args "'''.split()\n"))
+  (python-shell-send-buffer t))
 
 (defun lang-python-mode-setup ()
   (if (eq system-type 'windows-nt)
@@ -26,9 +31,10 @@
         (setq exec-path (append exec-path '("C:\\Python35")))
         (setq exec-path (append exec-path '("C:\\Python35\\Scripts")))))
   (jedi:setup)
-  (advice-add 'python-shell-send-buffer :before #'lang-python-shell-send-buffer-no-prompt)
+  (advice-add 'python-shell-send-buffer :before #'lang-python-shell-no-prompt)
   (define-key python-mode-map (kbd "C-c C-c") (lambda () (interactive) (python-shell-send-buffer t)))
   (define-key python-mode-map (kbd "C-c C-b") (lambda () (interactive) (python-shell-send-buffer nil)))
+  (define-key python-mode-map (kbd "C-c C-a") 'lang-python-send-buffer-with-my-args)
   (setq split-height-threshold 20)
   (setq split-width-threshold nil))
 
