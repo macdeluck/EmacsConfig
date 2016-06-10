@@ -13,11 +13,40 @@
       (apply orig-fun args))
 
 (if (eq system-type 'windows-nt)
-    (setq python-shell-interpreter "python")
+    (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter "/usr/bin/python3"))
 
+(defcustom lang-python-python-cmd
+  " -i "
+  "Python cmd arguments"
+  :type 'string
+  :group 'python
+  :safe 'stringp)
+
+(defcustom lang-python-ipython-prompt-setup
+  (concat "\"%config PromptManager.in_template = r'{color.LightGreen}>>> '\n"
+          "%config PromptManager.in2_template = r'{color.Yellow}>>> '\n"
+          "%config PromptManager.out_template = r'{color.LightRed}<<< '\n\"")
+  "Customization of ipython prompt"
+  :type 'string
+  :group 'python
+  :safe 'stringp)
+
+(defcustom lang-python-ipython-cmd
+  (concat " --no-banner --no-confirm-exit "
+          " -c " lang-python-ipython-prompt-setup " "
+          " -i ")
+  "IPython cmd arguments"
+  :type 'string
+  :group 'python
+  :safe 'stringp)
+
+(defun lang-python-get-cmd ()
+  (concat python-shell-interpreter (cond ((string-match "ipython" python-shell-interpreter) lang-python-ipython-cmd)
+                                         (t lang-python-python-cmd))))
+
 (defun lang-python-shell-no-prompt (&optional arg)
-  (python-shell-get-or-create-process (concat python-shell-interpreter " -i") nil t))
+    (python-shell-get-or-create-process (lang-python-get-cmd) nil t))
 
 (defun lang-python-send-buffer-with-my-args (args)
   (interactive "sPython arguments: ")
@@ -37,32 +66,3 @@
   (define-key python-mode-map (kbd "C-c C-a") 'lang-python-send-buffer-with-my-args)
   (setq split-height-threshold 20)
   (setq split-width-threshold nil))
-
-      ;; setup windows
-;    (let ((num-of-buffers (count-buffers)))
-;      (message "Number of buffers is %s" (number-to-string num-of-buffers))
-;      (if (< num-of-buffers 2)
-;          (split-window-vertically -20)))
- ;   (if (not (get-buffer "*IPython*"))
- ;       (progn
- ;         (message "Creating new IPython buffer")
- ;         (ipython)))
- ;   (next-multiframe-window)
- ;   (switch-to-buffer "*IPython*")
- ;   (previous-multiframe-window)
-
-
-    ;;(message "Python windows split style: %s" py-split-window-on-execute)
-
-    ;; switch to the interpreter after executing code
-                                        ;(setq py-shell-switch-buffers-on-execute-p nil)
-                                        ;(setq py-switch-buffers-on-execute-p nil)
-    ;; don't split windows
-;    (setq py-split-windows-on-execute-p nil)
-;    ;; try to automagically figure out indentation
-;                                        ;(setq py-smart-indentation t)
-
-;    (use-package jedi)
-;
- ;   (jedi:setup)
-                                        ;  (setq jedi:complete-on-dot t))
