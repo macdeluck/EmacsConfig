@@ -78,3 +78,8 @@
 
 ;; set default directory to home
 (setq default-directory (getenv "HOME"))
+
+;; replace instead of search backward
+(global-unset-key (kbd "C-r"))
+(global-set-key (kbd "C-r C-r") 'query-replace-regexp-current-symbol)
+(global-set-key (kbd "C-r C-s") 'isearch-backward)
