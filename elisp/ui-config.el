@@ -15,6 +15,7 @@
 (global-fci-mode t)
 (setq fci-rule-column 80)
 (setq fci-rule-color "#3E4451")
+(load "fci-mode-fix.el")
 
 ;; bar cursor
 (setq-default cursor-type 'bar)
