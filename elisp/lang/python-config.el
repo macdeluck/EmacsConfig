@@ -13,7 +13,7 @@
       (apply orig-fun args))
 
 (if (eq system-type 'windows-nt)
-    (setq python-shell-interpreter "ipython")
+    (setq python-shell-interpreter "python")
 (setq python-shell-interpreter "/usr/bin/python3"))
 
 (defcustom lang-python-python-cmd
@@ -41,8 +41,11 @@
   :group 'python
   :safe 'stringp)
 
+(defun lang-python-uses-ipython ()
+  (string-match "ipython" python-shell-interpreter))
+
 (defun lang-python-get-cmd ()
-  (concat python-shell-interpreter (cond ((string-match "ipython" python-shell-interpreter) lang-python-ipython-cmd)
+  (concat python-shell-interpreter (cond ((lang-python-uses-ipython) lang-python-ipython-cmd)
                                          (t lang-python-python-cmd))))
 
 (defun lang-python-shell-no-prompt (&optional arg)
