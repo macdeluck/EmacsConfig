@@ -27,14 +27,6 @@
 ;; turn of autosave
 (setq auto-save-default nil)
 
-;; auto completion
-(semantic-mode)
-(use-package auto-complete)
-(use-package auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
-(setq ac-delay 0.5)
-
 ;; show line numbers
 (load "linum-config")
 (define-globalized-minor-mode
@@ -83,3 +75,6 @@
 (global-unset-key (kbd "C-r"))
 (global-set-key (kbd "C-r C-r") 'query-replace-regexp-current-symbol)
 (global-set-key (kbd "C-r C-s") 'isearch-backward)
+
+;; distinguish C-m and RET
+(define-key input-decode-map [?\C-m] [C-m])

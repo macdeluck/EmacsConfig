@@ -1,11 +1,13 @@
-(defvar sanityinc/fci-mode-suppressed nil)
-(defadvice popup-create (before suppress-fci-mode activate)
-  "Suspend fci-mode while popups are visible"
-  (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-mode)
-  (when fci-mode
-    (turn-off-fci-mode)))
-(defadvice popup-delete (after restore-fci-mode activate)
-  "Restore fci-mode when all popups have closed"
-  (when (and (not popup-instances) sanityinc/fci-mode-suppressed)
-    (setq sanityinc/fci-mode-suppressed nil)
-    (turn-on-fci-mode)))
+(defvar-local company-fci-mode-on-p nil)
+
+(defun company-turn-off-fci (&rest ignore)
+  (when (boundp 'fci-mode)
+    (setq company-fci-mode-on-p fci-mode)
+    (when fci-mode (fci-mode -1))))
+
+(defun company-maybe-turn-on-fci (&rest ignore)
+  (when company-fci-mode-on-p (fci-mode 1)))
+
+(add-hook 'company-completion-started-hook 'company-turn-off-fci)
+(add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
+(add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)

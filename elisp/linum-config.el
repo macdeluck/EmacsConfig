@@ -19,8 +19,5 @@
 ;; highlight current line number
 (load "linum-highlight-current-line")
 
-;; linum and auto-complete compatibility
-(ac-linum-workaround)
-
 ;; disable linum for certain modes
 (load "linum-off")
