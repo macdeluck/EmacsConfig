@@ -1,3 +1,7 @@
+;; Init file
+;; You should load it withing ~/.emacs.d/init.el by calling
+;; (load "~/.emacs.d/elisp/init.el")
+
 ;; append path
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
