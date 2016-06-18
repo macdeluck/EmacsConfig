@@ -51,7 +51,6 @@
   (when (eq system-type 'windows-nt)
     (setq w32-pipe-read-delay 0)
     (add-to-list 'company-c-headers-path-system (lang-c-win32-find-headers-path)))
-  (message "%s" company-c-headers-path-system)
   (add-to-list 'company-backends '(company-c-headers :with company-yasnippet))
   (add-to-list 'company-backends '(company-irony :with company-yasnippet))
   (irony-mode)

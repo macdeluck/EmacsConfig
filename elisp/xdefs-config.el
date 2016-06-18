@@ -26,3 +26,9 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+(defun for-each (source-list func)
+  (let* ((result-list nil))
+    (dolist (el (reverse source-list))
+      (add-to-list 'result-list (funcall func el)))
+    result-list))
