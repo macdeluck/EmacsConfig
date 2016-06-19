@@ -47,10 +47,16 @@
     (if (file-exists-p f)
         (return f))))
 
+(defun lang-cpp-linux-find-headers-path ()
+  (let ((hdir "/usr/include/c++/"))
+    (concat hdir (car (reverse (remove-if (lambda (x) (or (string-match-p x ".") (string-match-p x ".."))) (directory-files hdir)))))))
+
 (defun lang-c-type-mode-setup ()
   (when (eq system-type 'windows-nt)
     (setq w32-pipe-read-delay 0)
     (add-to-list 'company-c-headers-path-system (lang-c-win32-find-headers-path)))
+  (when (eq system-type 'gnu/linux)
+    (add-to-list 'company-c-headers-path-system (lang-cpp-linux-find-headers-path)))
   (add-to-list 'company-backends '(company-irony :with company-yasnippet))
   (add-to-list 'company-backends '(company-c-headers))
   (irony-mode)
