@@ -42,8 +42,18 @@
    "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\include"
    "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\include"))
 
-(defun lang-c-win32-find-headers-path ()
-  (dolist (f lang-c-win32-headers-possible-paths)
+(defvar lang-c-win32-windows-sdk-headers-possible-paths
+  (list
+   "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v6.0A\\Include"
+   "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Include"
+   "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Include"
+   "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.0\\Include"
+   "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.1\\Include"
+   "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.1A\\Include"
+   "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v10.0\\Include"))
+
+(defun lang-c-find-headers-path (possible-paths)
+  (dolist (f possible-paths)
     (if (file-exists-p f)
         (return f))))
 
@@ -54,7 +64,8 @@
 (defun lang-c-type-mode-setup ()
   (when (eq system-type 'windows-nt)
     (setq w32-pipe-read-delay 0)
-    (add-to-list 'company-c-headers-path-system (lang-c-win32-find-headers-path)))
+    (add-to-list 'company-c-headers-path-system (lang-c-find-headers-path lang-c-win32-headers-possible-paths))
+    (add-to-list 'company-c-headers-path-system (lang-c-find-headers-path lang-c-win32-windows-sdk-headers-possible-paths)))
   (when (eq system-type 'gnu/linux)
     (add-to-list 'company-c-headers-path-system (lang-cpp-linux-find-headers-path)))
   (add-to-list 'company-backends '(company-irony :with company-yasnippet))
