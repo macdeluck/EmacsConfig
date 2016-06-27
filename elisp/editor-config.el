@@ -60,10 +60,33 @@
 (load "buffer-stack")
 (global-set-key [C-tab] 'buffer-stack-bury)
 
-;; don't ask to kill when process is alive in buffer
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
-  (flet ((process-list ())) ad-do-it))
+(defun my-save-buffers-kill-emacs (&optional arg)
+  "Offer to save each buffer(once only), then kill this Emacs process.
+With prefix ARG, silently save all file-visiting buffers, then kill."
+  (interactive "P")
+  (save-some-buffers arg t)
+  (and (or (not (fboundp 'process-list))
+       ;; process-list is not defined on MSDOS.
+       (let ((processes (process-list))
+         active)
+         (while processes
+           (and (memq (process-status (car processes)) '(run stop open listen))
+            (process-query-on-exit-flag (car processes))
+            (setq active t))
+           (setq processes (cdr processes)))
+         (or (not active)
+         (progn (list-processes t)
+            (yes-or-no-p "Active processes exist; kill them and exit anyway? ")))))
+       ;; Query the user for other things, perhaps.
+       (run-hook-with-args-until-failure 'kill-emacs-query-functions)
+       (or (null confirm-kill-emacs)
+       (funcall confirm-kill-emacs "Really exit Emacs? "))
+       (kill-emacs)))
+
+(defun my-save-buffers-kill-emacs-advice (orig-fun &optional args)
+  (my-save-buffers-kill-emacs))
+
+(advice-add 'save-buffers-kill-emacs :around #'my-save-buffers-kill-emacs-advice)
 
 ;; ALT-F4 to kill emacs (windows compatibility)
 (global-set-key [M-f4] 'save-buffers-kill-terminal)
@@ -77,4 +100,5 @@
 (global-set-key (kbd "C-r C-s") 'isearch-backward)
 
 ;; distinguish C-m and RET
-(define-key input-decode-map [?\C-m] [C-m])
+(if window-system
+	(define-key input-decode-map [?\C-m] [C-m]))

@@ -8,10 +8,12 @@
 (setq company-idle-delay 0)
 (setq company-quickhelp-delay 1)
 (global-set-key (kbd "C-.") 'company-complete-common)
-(global-set-key (kbd "C-,") #'company-quickhelp-manual-begin)
+(if window-system
+    (global-set-key (kbd "C-,") #'company-quickhelp-manual-begin))
 
 (global-company-mode)
-(company-quickhelp-mode)
+(if window-system
+    (company-quickhelp-mode))
 
 (defvar company-mode/enable-yas t
   "Enable yasnippet for all backends.")

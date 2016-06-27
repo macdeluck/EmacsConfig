@@ -1,5 +1,5 @@
 (defun lang-python-init ()
-  (use-package jedi))
+  (use-package company-jedi))
 
 (defun lang-python-filename-fix (orig-fun &rest args)
       ;;(message "Python called with args: %s" args)
@@ -62,7 +62,7 @@
       (progn
         (setq exec-path (append exec-path '("C:\\Python35")))
         (setq exec-path (append exec-path '("C:\\Python35\\Scripts")))))
-  (jedi:setup)
+  (add-to-list 'company-backends 'company-jedi)
   (advice-add 'python-shell-send-buffer :before #'lang-python-shell-no-prompt)
   (define-key python-mode-map (kbd "C-c C-c") (lambda () (interactive) (python-shell-send-buffer t)))
   (define-key python-mode-map (kbd "C-c C-b") (lambda () (interactive) (python-shell-send-buffer nil)))
