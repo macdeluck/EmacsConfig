@@ -3,7 +3,8 @@
  '(initial-frame-alist (quote ((fullscreen . maximized)))))
 
 ;; hide toolbar
-(tool-bar-mode -1)
+(if window-system
+    (tool-bar-mode -1))
 
 ;; window title
 (setq frame-title-format "Emacs (%b)")
